@@ -1,0 +1,44 @@
+# Illustrative thresholds (EUR). Calibrate on your own data and risk appetite.
+rules:
+  cash_threshold:
+    enabled: true
+    threshold: 10000
+    severity: medium
+
+  structuring:            # several just-below-threshold cash transactions in a short window
+    enabled: true
+    upper_threshold: 10000
+    lower_bound_ratio: 0.5
+    window_days: 7
+    min_txn_count: 3
+    min_total: 10000
+    severity: high
+
+  rapid_movement:         # funds in, then (almost) the same amount out, quickly
+    enabled: true
+    window_hours: 48
+    min_inflow: 5000
+    passthrough_ratio: 0.9
+    severity: high
+
+  high_risk_country:
+    enabled: true
+    countries: [KP, IR, MM]
+    min_amount: 0
+    severity: medium
+
+  velocity_spike:         # a week far above the customer's own recent baseline
+    enabled: true
+    baseline_weeks: 8
+    min_history_weeks: 4
+    multiplier: 5
+    min_amount: 5000
+    severity: medium
+
+  round_amounts:          # repeated round-number transactions
+    enabled: true
+    round_base: 1000
+    min_amount: 1000
+    window_days: 30
+    min_count: 4
+    severity: low
